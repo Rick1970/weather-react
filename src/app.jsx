@@ -6,14 +6,18 @@ var query = ''; // Expects something like this ?city=London,Paris,Berlin,Madrid
 var cities = []; // Transform query string cities into an array
 var citiesWeather = []; // API cache
 var currentCity = 0; // Index of current city displayed
-require('./city.jsx')
 var Weather = React.createClass({
   getInitialState: function() {
     return {
         weather: '',
         temp: 0,
         humidity: 0,
-        wind: 0
+        wind: 0,
+        latitude  : 0,
+        longitude : 0,
+        city: '',
+        message:'',
+        mapSrc:''
     }
 },
 fetchData: function() {
@@ -70,6 +74,26 @@ componentWillMount: function() {
     }, (1000*60*5));
 
     this.fetchData();
+    this.getCityData();
+
+},
+getCityData: function() {
+  var self=this;
+  navigator.geolocation.getCurrentPosition(function (position) {
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+      console.log(latitude);
+      console.log("longitude"+longitude);
+      self.setState({
+          latitude: latitude,
+          longitude: longitude,
+          city: '',
+          mapSrc:'https://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude + '&zoom=13&size=300x300&sensor=false',
+      });
+  }, function(){
+    console.log(error);});
+
 },
     render: function() {
       // Build class names with dynamic data
@@ -94,7 +118,8 @@ componentWillMount: function() {
       }
 
       // Render the DOM elements
-      return (<div className={bgColorClass}>
+      return (
+        <div className={bgColorClass}>
           <h1 className="city">{cities[currentCity]}</h1>
           <div className="weather">
               <i className={weatherClass}></i>
@@ -104,6 +129,9 @@ componentWillMount: function() {
               <div className="humidity"><i className="wi wi-raindrop"></i>{this.state.humidity} %</div>
               <div className="wind"><i className="wi wi-small-craft-advisory"></i>{this.state.wind} <span className="vel">Km/h</span></div>
           </section>
+          <h1 className="">longitude {this.state.longitude}</h1>
+          <h1 className="">latitude {this.state.longitude}</h1>
+          <img src={this.state.mapSrc}/>
       </div>
     )
     }
