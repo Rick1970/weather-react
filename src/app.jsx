@@ -61,7 +61,7 @@ componentWillMount: function() {
         }
     }
     else {
-        cities[0] = 'London'; // Set London as the default city
+        cities[0] = 'Seattle'; // Set London as the default city
     }
 
     // Create a timer to clear the cache after 5 minutes, so we can get updated data from the API
