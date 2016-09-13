@@ -48,7 +48,7 @@ function bundle() {
     return bundler
         .bundle()
         .on('error', notify)
-        .pipe(conca('main.js'))
+        .pipe(source('main.js'))
         .pipe(gulp.dest('./'))
 }
 bundler.on('update', bundle);
@@ -60,9 +60,9 @@ gulp.task('build', function() {
 
 // Compile the SASS files from main.scss
 gulp.task('sass',function () {
-  return gulp.src(['./sass/base.scss'])
+  return gulp.src(['./sass/partials/base.scss'])
     .pipe(sass())
-    .pipe(source('style.css'))
+    .pipe(concat('style.css'))
     .pipe(gulp.dest('./'))
 });
 // Live reload server settings
