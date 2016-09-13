@@ -6,7 +6,7 @@ var query = ''; // Expects something like this ?city=London,Paris,Berlin,Madrid
 var cities = []; // Transform query string cities into an array
 var citiesWeather = []; // API cache
 var currentCity = 0; // Index of current city displayed
-
+require('./city.jsx')
 var Weather = React.createClass({
   getInitialState: function() {
     return {
